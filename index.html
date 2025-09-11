@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Login Form — Лабораторна</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="card" aria-labelledby="title">
+    <h1 id="title">Форма логіну</h1>
+    <p class="lead">Заповніть обов'язкові поля. Після успішної валідації — побачите повідомлення.</p>
+
+    <form id="loginForm" novalidate>
+      <div class="row">
+        <div class="field" style="flex:1">
+          <label for="firstName">Ім'я <span style="color:var(--error)">*</span></label>
+          <input id="firstName" name="firstName" type="text" required minlength="2" placeholder="Ім'я (обов'язково)">
+          <div class="errors" id="err-firstName"></div>
+        </div>
+
+        <div class="field" style="flex:1">
+          <label for="lastName">Прізвище <span style="color:var(--error)">*</span></label>
+          <input id="lastName" name="lastName" type="text" required minlength="2" placeholder="Прізвище (обов'язково)">
+          <div class="errors" id="err-lastName"></div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="email">Електронна пошта <span style="color:var(--error)">*</span></label>
+        <input id="email" name="email" type="email" required placeholder="name@example.com">
+        <div class="errors" id="err-email"></div>
+      </div>
+
+      <div class="field">
+        <label for="password">Пароль <span style="color:var(--error)">*</span></label>
+        <input id="password" name="password" type="password" required minlength="6" placeholder="Мінімум 6 символів">
+        <div class="errors" id="err-password"></div>
+      </div>
+
+      <div class="checkbox-row">
+        <input id="showPass" type="checkbox">
+        <label for="showPass">Показати пароль</label>
+      </div>
+
+      <button type="submit" class="btn">Увійти</button>
+      <div id="formMessage"></div>
+    </form>
+  </main>
+<script src="script.js"></script>
+</body>
+</html>
