@@ -1,59 +1,63 @@
-(function(){
-  const form = document.getElementById('loginForm');
-  const firstName = document.getElementById('firstName');
-  const lastName = document.getElementById('lastName');
-  const email = document.getElementById('email');
-  const password = document.getElementById('password');
-  const showPass = document.getElementById('showPass');
-  const msg = document.getElementById('formMessage');
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('registerForm');
+  const fnameEl = document.getElementById('fname');
+  const emailEl = document.getElementById('email');
+  const passwordEl = document.getElementById('password');
+  const togglePassword = document.getElementById('togglePassword');
+  const message = document.getElementById('message');
+  const modal = document.getElementById('successModal');
+  const nameOutput = document.getElementById('nameOutput');
 
-  // показ/приховування пароля
-  showPass.addEventListener('change', () => {
-    password.type = showPass.checked ? 'text' : 'password';
+  togglePassword.addEventListener('click', () => {
+    const show = passwordEl.type === 'password';
+    passwordEl.type = show ? 'text' : 'password';
+    togglePassword.textContent = show ? '🙈' : '👁';
   });
 
-  function showError(input, message) {
-    document.getElementById('err-' + input.id).textContent = message || '';
-  }
-
-  function validEmail(v){
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-  }
-
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    msg.textContent = '';
-    msg.className = '';
+    message.textContent = '';
 
-    let hasError = false;
+    const fname = fnameEl.value.trim();
+    const email = emailEl.value.trim();
+    const password = passwordEl.value.trim();
 
-    if (!firstName.value.trim() || firstName.value.trim().length < 2) {
-      showError(firstName, "Ім'я має містити мінімум 2 символи.");
-      hasError = true;
-    } else showError(firstName, "");
-
-    if (!lastName.value.trim() || lastName.value.trim().length < 2) {
-      showError(lastName, "Прізвище має містити мінімум 2 символи.");
-      hasError = true;
-    } else showError(lastName, "");
-
-    if (!email.value.trim() || !validEmail(email.value.trim())) {
-      showError(email, "Введіть коректну email адресу.");
-      hasError = true;
-    } else showError(email, "");
-
-    if (!password.value || password.value.length < 6) {
-      showError(password, "Пароль має бути щонайменше 6 символів.");
-      hasError = true;
-    } else showError(password, "");
-
-    if (hasError) {
-      msg.textContent = "Будь ласка, виправте помилки у формі.";
-      msg.className = "errors";
+    if(!fname || !email || !password){
+      message.style.color = 'red';
+      message.textContent = 'Будь ласка, заповніть усі поля!';
+      return;
+    }
+    if(password.length < 6){
+      message.style.color = 'red';
+      message.textContent = 'Пароль має містити мінімум 6 символів!';
       return;
     }
 
-    msg.textContent = `Успішно! Вітаємо, ${firstName.value.trim()} ${lastName.value.trim()}.`;
-    msg.className = "success";
+    try{
+      const res = await fetch('/register', {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json' },
+        body: JSON.stringify({ fname, email, password })
+      });
+      const data = await res.json();
+      if(data.success){
+        message.style.color = 'green';
+        message.textContent = 'Реєстрація успішна!';
+        nameOutput.innerHTML = '';
+        if(window.WriteName){ window.WriteName(fname, nameOutput, {delayMs:180}); }
+        else { nameOutput.textContent = fname; }
+        if(typeof modal.showModal === 'function'){ modal.showModal(); } else { modal.setAttribute('open',''); }
+        form.reset();
+        togglePassword.textContent = '👁';
+        passwordEl.type = 'password';
+      } else {
+        message.style.color = 'red';
+        message.textContent = data.error || 'Невірні дані!';
+      }
+    }catch(err){
+      console.error(err);
+      message.style.color = 'red';
+      message.textContent = 'Помилка серверу!';
+    }
   });
-})();
+});

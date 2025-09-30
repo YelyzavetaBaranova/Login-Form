@@ -1,52 +1,51 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Login Form — Лабораторна</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Форма реєстрації</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main class="card" aria-labelledby="title">
-    <h1 id="title">Форма логіну</h1>
-    <p class="lead">Заповніть обов'язкові поля. Після успішної валідації — побачите повідомлення.</p>
+  <div class="container card">
+    <h1>Форма реєстрації</h1>
 
-    <form id="loginForm" novalidate>
-      <div class="row">
-        <div class="field" style="flex:1">
-          <label for="firstName">Ім'я <span style="color:var(--error)">*</span></label>
-          <input id="firstName" name="firstName" type="text" required minlength="2" placeholder="Ім'я (обов'язково)">
-          <div class="errors" id="err-firstName"></div>
-        </div>
+    <form id="registerForm" class="form">
+      <label for="fname">Ім’я:</label>
+      <input id="fname" name="fname" type="text" placeholder="Liza" required />
 
-        <div class="field" style="flex:1">
-          <label for="lastName">Прізвище <span style="color:var(--error)">*</span></label>
-          <input id="lastName" name="lastName" type="text" required minlength="2" placeholder="Прізвище (обов'язково)">
-          <div class="errors" id="err-lastName"></div>
-        </div>
+      <label for="email">Електронна пошта:</label>
+      <input id="email" name="email" type="email" placeholder="gmail.com" required />
+
+      <label for="password">Пароль:</label>
+      <div class="password-row">
+        <input id="password" name="password" type="password" placeholder="••••••••" required />
+        <button id="togglePassword" type="button" class="icon-btn" aria-label="Показати пароль">👁</button>
       </div>
 
-      <div class="field">
-        <label for="email">Електронна пошта <span style="color:var(--error)">*</span></label>
-        <input id="email" name="email" type="email" required placeholder="name@example.com">
-        <div class="errors" id="err-email"></div>
-      </div>
-
-      <div class="field">
-        <label for="password">Пароль <span style="color:var(--error)">*</span></label>
-        <input id="password" name="password" type="password" required minlength="6" placeholder="Мінімум 6 символів">
-        <div class="errors" id="err-password"></div>
-      </div>
-
-      <div class="checkbox-row">
-        <input id="showPass" type="checkbox">
-        <label for="showPass">Показати пароль</label>
-      </div>
-
-      <button type="submit" class="btn">Увійти</button>
-      <div id="formMessage"></div>
+      <button type="submit" class="submit-btn">Зареєструватися</button>
     </form>
-  </main>
-<script src="script.js"></script>
+
+    <div id="message" class="message" aria-live="polite"></div>
+  </div>
+
+  <dialog id="successModal" class="modal">
+    <form method="dialog" class="modal-card">
+      <header class="modal-header">
+        <strong>Success</strong>
+        <button value="close" aria-label="Закрити" class="close-x">✕</button>
+      </header>
+      <div class="modal-body">
+        <p>Registration successful!</p>
+        <div id="nameOutput" class="name-output"></div>
+      </div>
+      <footer class="modal-footer">
+        <button value="close" class="close-btn">CLOSE</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <script src="library.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
